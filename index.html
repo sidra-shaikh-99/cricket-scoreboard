@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Digital Cricket Scoreboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Stadium background -->
+  <div class="stadium" aria-hidden="true">
+    <div class="sky"></div>
+    <div class="lights"></div>
+    <div class="stands"></div>
+    <div class="field"><div class="pitch"></div></div>
+    <div class="shade"></div>
+  </div>
+
+  <div class="page">
+
+    <header class="topbar">
+      <h1>Digital Cricket Scoreboard</h1>
+      <span id="engineBadge" class="badge badge-off">Connecting to Verilog engine...</span>
+    </header>
+
+    <div id="errorBanner" class="error-banner" role="alert" hidden></div>
+
+    <!-- Match setup -->
+    <section class="card setup">
+      <label>Team A
+        <input id="teamA" type="text" maxlength="24" value="India">
+      </label>
+      <label>Team B
+        <input id="teamB" type="text" maxlength="24" value="Australia">
+      </label>
+      <label>Overs
+        <input id="oversInput" type="number" min="1" max="50" value="5">
+      </label>
+      <button id="startBtn" class="btn btn-start" type="button">Start New Match</button>
+    </section>
+
+    <main class="layout">
+
+      <!-- ================= SCOREBOARD ================= -->
+      <div class="board">
+
+        <section class="card hero" id="heroCard">
+          <div class="hero-top">
+            <div>
+              <div class="innings-tag" id="inningsTag">1st Innings</div>
+              <h2 class="team-name" id="battingTeam">-</h2>
+              <div class="vs" id="vsLine">-</div>
+            </div>
+            <div class="rr-box">
+              <span class="small-label">Run rate</span>
+              <span class="rr-value" id="runRate">0.00</span>
+            </div>
+          </div>
+
+          <div class="led-row">
+            <div class="led" id="scoreLed">0/0</div>
+            <div class="overs-box">
+              <span class="small-label">Overs</span>
+              <span class="overs-value" id="oversText">0.0</span>
+              <span class="overs-max" id="oversMax">of 5</span>
+            </div>
+          </div>
+
+          <div class="status" id="statusLine">-</div>
+
+          <div class="chips">
+            <div class="chip"><span class="chip-num" id="foursNum">0</span><span class="chip-lbl">Fours</span></div>
+            <div class="chip"><span class="chip-num" id="sixesNum">0</span><span class="chip-lbl">Sixes</span></div>
+            <div class="chip"><span class="chip-num" id="extrasNum">0</span><span class="chip-lbl">Extras</span></div>
+            <div class="chip"><span class="chip-num" id="targetNum">-</span><span class="chip-lbl">Target</span></div>
+          </div>
+
+          <div class="over-strip">
+            <span class="small-label" id="overTitle">This over</span>
+            <div class="balls" id="overBalls"></div>
+          </div>
+
+          <div class="summaries" id="summaries"></div>
+        </section>
+
+        <section class="card">
+          <h3>Batting</h3>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>Batter</th><th>Status</th><th class="num">R</th><th class="num">B</th>
+                    <th class="num">4s</th><th class="num">6s</th><th class="num">SR</th></tr>
+              </thead>
+              <tbody id="batBody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="card">
+          <h3>Bowling</h3>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>Bowler</th><th class="num">O</th><th class="num">R</th>
+                    <th class="num">W</th><th class="num">Econ</th></tr>
+              </thead>
+              <tbody id="bowlBody"></tbody>
+            </table>
+          </div>
+          <div class="extras-line" id="extrasLine"></div>
+        </section>
+
+      </div>
+
+      <!-- ================= CONTROLS ================= -->
+      <aside class="card controls" id="controls">
+        <h3>Score the ball</h3>
+
+        <div class="run-grid">
+          <button class="btn run" data-type="runs" data-value="0" type="button">0</button>
+          <button class="btn run" data-type="runs" data-value="1" type="button">1</button>
+          <button class="btn run" data-type="runs" data-value="2" type="button">2</button>
+          <button class="btn run" data-type="runs" data-value="3" type="button">3</button>
+          <button class="btn run four" data-type="runs" data-value="4" type="button">4</button>
+          <button class="btn run six" data-type="runs" data-value="6" type="button">6</button>
+        </div>
+
+        <button class="btn wicket" data-type="wicket" type="button">Wicket</button>
+
+        <div class="extras-grid">
+          <button class="btn extra" data-type="wide" type="button">Wide</button>
+          <button class="btn extra" data-type="noball" type="button">No Ball</button>
+          <button class="btn extra" data-type="bye" type="button">Bye</button>
+          <button class="btn extra" data-type="legbye" type="button">Leg Bye</button>
+        </div>
+
+        <label class="bye-select">Bye / Leg Bye runs
+          <select id="extraRuns">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+          </select>
+        </label>
+
+        <div class="action-grid">
+          <button class="btn action" id="undoBtn" type="button">Undo Last Ball</button>
+          <button class="btn action" id="nextBtn" type="button">Next Innings</button>
+          <button class="btn action danger" id="resetBtn" type="button">Reset Match</button>
+        </div>
+      </aside>
+
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
